@@ -9,3 +9,8 @@
 
 2. Build  
 `make`
+
+
+3. Please add any info or references to the `draft.md` file so that we can later use them as refs
+
+
