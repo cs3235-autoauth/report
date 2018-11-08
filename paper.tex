@@ -157,7 +157,7 @@ Contrary to the common notion of information leaking, none of the above-mentione
 In order to serve these various demands, the browser expose APIs for developers to query such information, e.g., the built-in \verb|navigator| and \verb|screen| objects in JavaScript which reveal the browser name, version, platform information. 
 In addition, browser plugins which add  features to the browser also have access to information about the computer that can expose more accurate identifiers.
 
-\subsection{Surveys of Fingerprinting Practices}
+\subsection{Survey of Fingerprinting Practices}
 
 \begin{figure*}[h]
     \centering
@@ -167,26 +167,26 @@ In addition, browser plugins which add  features to the browser also have access
 \end{figure*}
 
 
-According to Acar et al. \cite{acar:fpd}, browser fingerprinting technologies can be categorized by the approach they collect information: (1) JavasScript-based, (2) Plugin-based, (3) Extension-based, (4) Header-based and Server-side.
-The rest of this seciton will go through in more details about each of them.
+According to Acar et al. \cite{acar:fpd}, browser fingerprinting technologies can be categorized by the approach they use to collect information: (1) JavaScript-based, (2) Plugin-based, (3) Extension-based, (4) Header-based and Server-side.
+The rest of this section will go through in more details about each of them.
 
 \paragraph{JavaScript-Based Fingerprinting}
-JavaScript is the default scripting language for almost all interactive web applications now. It provides functionalities such as rendering of animation, submitting of user forms, and altering the content of the page dynamically. 
-Other than the informative objects mentioned earlier (\verb|navigator| and \verb|screen|), JavaScript can also be used to identify users indirectly, such as obtaining the information of the browsing history, the nuances in performance of JavaScript engine at different browsers.
+JavaScript is the default scripting language for almost all interactive web applications now. It provides functionality such as rendering of animation, submitting of user forms, and altering the content of the page dynamically. 
+Other than the informative objects mentioned earlier (\verb|navigator| and \verb|screen|), JavaScript can also be used to identify users indirectly, such as obtaining  browsing history or fine-grained timing information of the JavaScript engine at different browsers.
 
 \paragraph{Plugin-Based Fingerprinting}
-Plugins nowadays are equipped with capabilities to access the software and hardware properties on the underlying system. One of these common plugins is Flash, that is used for displaying videos and games in the \verb|.swf| format. In order for the web pages to use Flash effectively, Flash exposes APIs to query for the information on the operating system, as well as the specific version of Flash being installed.
-Moreover, Flash also exposes APIs that allow one to list all the system fonts, which can vary from users to users. The difference in those fonts installed can again be used as an identifier for the user.
-Therefore, the more plugins a user installed, the more information that those plugins expose to fingerprinters.
+Plugins are equipped with capabilities to access the software and hardware properties of the underlying system. One of these common plugins is Flash that is used for displaying videos and games in the \verb|.swf| format. In order for the web pages to use Flash effectively, Flash exposes APIs to query  information about the operating system, as well as the specific version of Flash installed.
+Moreover, Flash also exposes APIs that allow one to list all the system fonts, which can vary from user to user. The difference in those fonts installed can again be used as an identifier for the user.
+Therefore, the more plugins a user has installed, the more information can be exposed to fingerprinting software.
 
 \paragraph{Extension-Based Fingerprinting}
-A browser extension is a special software component that adds extra functionalities to the browsers, just like how one can download additional applications from an App Store. Common extensions are like RSS feeders, Evernote, etc. They are different from plugins as extensions provide additional functionalities to the browser while plugins enable some functionalities so that web page can be rendered effectively. Take one of the extensions that expose additional
+A browser extension is a special software component that adds extra functionality to the browser, such as RSS reader or ad-blockers. Extensions are different from plugins as extensions provide additional functionality in the browser itself while plugins enable additional functionality for rendering a web page. Take one of the extensions  that expose additional
 information as an example: \verb|NoScript| \cite{noscript}, which is an extension that blocks executions of Web objects from any URL but those whitelisted. As explained by Mowery et al. \cite{mowery:fg}, one can prepare a list of URLs in the web page and see which of them are listed on the whitelist. The whitelist of the extension then can be used as an identifier to differentiate users from each other.
 
 \paragraph{Header-Based and Server-Side}
-This is one of the most original fingerprinting practice where the fingerprinters use information from the HTTP headers as identifiers. The HTTP headers contain information such as th IP address, HTTP Accept Headers, and etc every time in the request. Such information is readily avaialble for all the websites and sent to the servers in the HTTP request.
+This is one of the most basic fingerprinting techniques where the fingerprinters use information from the HTTP headers as identifiers. The HTTP headers contain information such as the IP address or Accept Headers in the request. Such information is readily available for all browsers and sent to  servers in the HTTP request.
 
-Combining all these different practices together, the fingerprinter can obtain lots of information about the user.  Laperdrix et al. \cite{pierre:beauty} demonstrates that one can come up with 17 attributes from various channels to idenfity fingerprints for mobile users. As shown in Figure \ref{fig:amiunique}, the possible number of combinations of the different vlaues from those parameters is rather large, and the study successfully identify $81\%$ users out of 118,000 users.
+Combining all these different practices together, the fingerprinter can obtain a large amount of information on a user.  Laperdrix et al. \cite{pierre:beauty} demonstrates that one can combine at least 17 attributes from various sources to create unique device fingerprints. As shown in Figure \ref{fig:amiunique}, the possible number of combinations of the different vlaues from those parameters is rather large, and the study successfully identified $81\%$ users out of 118,000 users.
 
 
 
