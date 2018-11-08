@@ -143,11 +143,11 @@ email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
 
 \section{Fingerprint Technology}
 
-\subsection{Overview of the Fingerprinting Practices}
+\subsection{Overview of  Fingerprinting Techniques}
 Browser fingerprinting technology usually involves the process of collecting user data from various level of the device, such as user's browser information and the operating system information. \cite{pierre:beauty}
 In contrast with the state-of-the-art Cookies methodology, such fingerprinting is said to be "stateless" because no additional information (e.g., cookies, tokens) is stored on the user's device. 
 
-With the amount of information given away from the browser, they can be identified in a stable and mesurable manner \cite{niki:cookie} by emplanting scripts that collect and process those information into the web page, as shown by Nikiforaskis. 
+With the amount of information given away from the browser, they can be identified in a stable and mesurable manner \cite{niki:cookie} by embedding scripts that collect and process those information into the web page, as shown by Nikiforaskis. 
 Eckersley from the Panopticlick project \cite{panop} demonstrates that browser fingerprinting technology is a fairly effective user tracking tool, drawing attention and usage from many advertising companies. Almost 500K browsers have their information scanned and recorded on the Panopticlick website, and around $83.6\%$ of them can be identified uniquely.
 More recently, newer techniques have been discovered that use JavaScript to reveal more information such as operating system and microarchitecture, and even hardware information such as screen resolution. \cite{mowery:fg} \cite{boda:user}
 As HTML5 and WebGL becomes more popular tools for websites, new sources of fingerprinting information is added to the arsenal. More importantly, such fingerprinting information is no longer restricted to browser properties because different system configurations will behave differently when rendering images through the canvas component.\cite{mowery:pixel}
@@ -157,7 +157,7 @@ Contrary to the common notion of information leaking, none of the above-mentione
 In order to serve these various demands, the browser expose APIs for developers to query such information, e.g., the built-in \verb|navigator| and \verb|screen| objects in JavaScript which reveal the browser name, version, platform information. 
 In addition, browser plugins which add  features to the browser also have access to information about the computer that can expose more accurate identifiers.
 
-\subsection{Survey of Fingerprinting Practices}
+\subsection{Survey of Fingerprinting Techniques}
 
 \begin{figure*}[h]
     \centering
