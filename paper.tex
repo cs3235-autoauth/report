@@ -133,10 +133,21 @@ email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
 \keywords{Authentication, device fingerprinting, web authentication} % NOT required for Proceedings
 
 \section{Introduction}
-- Background in terms of old cookie and local storaged based user identification techniques.
-- The motivation and driver for a new technology: Fingerprint
+\subsection{Background}
+Traditional password-based authentication systems require a user to provide two pieces of information: an identifer and a password proving their identity. The weaknesses of such a system largely hinge on the security of said password. For example, users may set weak passwords, allowing the security of their account to be comprimised as attackers use brute-force attacks to gain access. On the server side, the storage of these passwords or their representations also prove to be a problem, as they present themselves as valuable targets for attackers looking to comprimise a large number of users.
 
-- Intro of the technoloy, its history, and context.
+In this paper, we explore an alternative method to identifying and authenticating users using device fingerprinting. Device fingerprinting refers to techniques that collect information about the attributes and configuration of a device for the purpose of constructing a unique identifier for that device. Since this identifier is unique and can be generated without the intervention of the user, it can be used to build a passwordless authentication system where the user need only remember their username. The system will then compute a unique identifer for the device and check that with the one stored in its database, allowing the user access if the fingerprints match over a certain threshold.
+
+\subsection{What is device fingerprinting?}
+Device fingerprinting has its roots in its use by online analytics and advertising companies. In order to track a user across different websites, and to serve them relevant advertisements, these companies require a way to be able to identify the same device across different websites. The traditional method relies on placing a tracking cookie that contains a unique identifer on the device when it first visits a website that contains their analytics or advertising script. This would then allow the company to associate visits on different websites that they manage to the same user, and correlate data from those different visits knowing that they come from the same device.
+
+However, this traditional cookie based method presents a few problems, mainly in the form of persistence. Cookies are generally not guaranteed to last for any amount of time, since they can be cleared any time by the user. More recently, as privacy concerns over tracking has arisen, some browsers such as Safari have taken to blocking tracking cookies by default, making cookie based identifiers less reliable.
+
+Therefore, these companies have turned to device fingerprinting as a more effective method of device identification. By computing a unique identifier from the attributes of the device, advertisers can now store a identifier that would persist across users clearing their cookies, since recomputation of the identifier on the same device would yield the same hash. More importantly, device fingerprinting could generate identifiers that were consistent across different browsers on the same machine, or even across minor software and hardware changes.
+
+This enhanced persistence, as well as its use by advertsing and analytics companies for the purposes of tracking users, means that device fingerprinting is traditionally regarded as privacy invading, and as a technique that undermines security. However, the same properties that makes device fingerprinting attractive for tracking users also mean that it is a viable authentication method. Since it requires no input, it is far easier for a user to authenticate themselves through a device fingerprinting based authentication system. Moreover, since the fingerprint is tied to the inherent attributes of the device, it is difficult for an attacker to trivially attack and forge an identifier the same way they might brute force a password, since the interaction between the device fingerprint and the device itself may be hard to simulate. 
+
+Therefore, we would like to explore the usage of device fingerprinting as a security enhancing technique, specifically in constructing a authentication system that is able to authenticate users with their unique device fingerprint, thus eliminating the need for passwords.
 
 \section{Related work}
 - A survey of related work, what has been done, cite some papers and summarize 
