@@ -133,7 +133,6 @@ email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
 
 \section{Introduction}
 - Background in terms of old cookie and local storaged based user identification techniques.
-
 - The motivation and driver for a new technology: Fingerprint
 
 - Intro of the technoloy, its history, and context.
@@ -142,21 +141,105 @@ email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
 - A survey of related work, what has been done, cite some papers and summarize 
 
 \section{Fingerprint Technology}
-- How it works in general
-- A survey of the current solutions
 
-\subsection{Classification}
--  What are the different classification, and ways
+\subsection{Overview of the Fingerprinting Practices}
+Browser fingerprinting technology usually involves the process of collecting user data from various level of the device, such as user's browser information and the operating system information. \cite{pierre:beauty}
+In contrast with the state-of-the-art Cookies methodology, such fingerprinting is said to be "stateless" because no additional information (e.g., cookies, tokens) is stored on the user's device. 
+
+With the amount of information given away from the browser, they can be identified in a stable and mesurable manner \cite{niki:cookie} by emplanting scripts that collect and process those information into the web page, as shown by Nikiforaskis. 
+Eckersley from Panopticlick project \cite{panop} demonstrates that browser fingerprinting technology is a fairly effective user tracking tool, drawing attention and usage from many advertising companies. Almost 500K browsers have their information scanned and recorded on the Panopticlick website, and around $83.6\%$ of them can be identified uniquely.
+More recently, newer techniques are discovered that exploit the potential issues in JavaScript engine to reveal more information such as operating system and microarchitecture, even hardware information such as screen resolution. \cite{mowery:fg} \cite{boda:user}
+As HTML5 and WebGL becomes more popular tools at rendering web sites content, new fingerprinting information is added to the arsenal. More importantly, such fingerprinting information is no longer restricted to browser properties because different hardware and softwares will behave differently when rendering images through the canvas component.\cite{mowery:pixel}
+
+
+Contrary to the common notion of information leaking, none of the above-mentioned practices involves complicated mechanism such as password hacking, or any sort of attack. This information is just available.
+The underlying reason that so much fine-grained information about the browser and the user can be retrieved is the necessity for a web application to be able to render the pages based on differnt devices effectively. Responsive web application needs to know the dimension of the screen; a video application might need to know the presence of plugin like Adobe Flash. 
+In order to serve various demands, the browser expose APIs for developers to query such information, e.g., the built-in \verb|navigator| and \verb|screen| objects from Javascript which reveals the browser name, version, platform information. 
+In addition, browser plugins, softwares from third-party which add in many enriching features to the browser have access to information about the computers, that can expose more accurate identifiers.
+
+\subsection{Surveys of Fingerprinting Practices}
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth]{assets/amiunique.png}
+    \caption{List of Attributes Fingerprinted for AmIUnique.org}
+    \label{fig:amiunique}
+\end{figure*}
+
+
+According to Acar et al. \cite{acar:fpd}, browser fingerprinting technologies can be categorized by the approach they collect information: (1) JavasScript-based, (2) Plugin-based, (3) Extension-based, (4) Header-based and Server-side.
+The rest of this seciton will go through in more details about each of them.
+
+\paragraph{JavaScript-Based Fingerprinting}
+JavaScript is the default scripting language for almost all interactive web applications now. It provides functionalities such as rendering of animation, submitting of user forms, and altering the content of the page dynamically. 
+Other than the informative objects mentioned earlier (\verb|navigator| and \verb|screen|), JavaScript can also be used to identify users indirectly, such as obtaining the information of the browsing history, the nuances in performance of JavaScript engine at different browsers.
+
+\paragraph{Plugin-Based Fingerprinting}
+Plugins nowadays are equipped with capabilities to access the software and hardware properties on the underlying system. One of these common plugins is Flash, that is used for displaying videos and games in the \verb|.swf| format. In order for the web pages to use Flash effectively, Flash exposes APIs to query for the information on the operating system, as well as the specific version of Flash being installed.
+Moreover, Flash also exposes APIs that allow one to list all the system fonts, which can vary from users to users. The difference in those fonts installed can again be used as an identifier for the user.
+Therefore, the more plugins a user installed, the more information that those plugins expose to fingerprinters.
+
+\paragraph{Extension-Based Fingerprinting}
+A browser extension is a special software component that adds extra functionalities to the browsers, just like how one can download additional applications from an App Store. Common extensions are like RSS feeders, Evernote, etc. They are different from plugins as extensions provide additional functionalities to the browser while plugins enable some functionalities so that web page can be rendered effectively. Take one of the extensions that expose additional
+information as an example: \verb|NoScript| \cite{noscript}, which is an extension that blocks executions of Web objects from any URL but those whitelisted. As explained by Mowery et al. \cite{mowery:fg}, one can prepare a list of URLs in the web page and see which of them are listed on the whitelist. The whitelist of the extension then can be used as an identifier to differentiate users from each other.
+
+\paragraph{Header-Based and Server-Side}
+This is one of the most original fingerprinting practice where the fingerprinters use information from the HTTP headers as identifiers. The HTTP headers contain information such as th IP address, HTTP Accept Headers, and etc every time in the request. Such information is readily avaialble for all the websites and sent to the servers in the HTTP request.
+
+Combining all these different practices together, the fingerprinter can obtain lots of information about the user.  Laperdrix et al. \cite{pierre:beauty} demonstrates that one can come up with 17 attributes from various channels to idenfity fingerprints for mobile users. As shown in Figure \ref{fig:amiunique}, the possible number of combinations of the different vlaues from those parameters is rather large, and the study successfully identify $81\%$ users out of 118,000 users.
 
 
 
 \subsection{Fingerprint for Authentification}
-- How can fingerprint be used to enhance authentification method
-- Intro on how Authentification is done
+Despite the enumerous security loopholes in password-based authentification methodology, it still remains the dominant way for web authentification currently. There are multiple ways to enhance the security of password-based authentification, such as the Multi-Factor Authentification model. 
+Fingerprinting technology can be used as the supporting method of authentification to augment the traditional password-based method.
+A number of commercial fraud detection services have already started trying using device fingerprinting to identify fraudulent transactions.\cite{maxmind} \cite{parame} Fingerprints about user's device is collected implicitly and stored alongside with the contentional password for a user without user's intervention.  The server can use a wide range of fingerprinting methods described in the early sections .The servers can then verify such information later when user is authenticated.
+
+The following sections will descuss the possible attacks where device fingerprinting can be used to strengthen web authentification.
+
+
 \subsubsection{Desired Properties}
-- What makes it a good auth system
-\subsubsection{Thread Model}
-- What can possiblity go wrong
+In order to effectivley augment user authentification with fingerprinting, there are obviously certain properties of the fingerprinting practices used that must be held to make authentification safer and easier. A set of inappropriate fingerprinting practices chosen may incur too many false negatives in authentification process, denying users access or falling back to the most conservative authentification process frequently. 
+Comparing to the general usage of fingeprinting in advertising, fingerprinting for authentification requires a higher level of accuracy in distinguishing users. A $80\%$ or $90\%$ is simply not enough. \cite{alca:dev}
+
+In this section, we will be descussing the properties that make a set of fingerprinting practices a good augmentation for the authentification process:
+
+\paragraph{ Stablility at Different Occasions}
+It is normal for a user to have his/her fingerprint changes over time or at different occassions. For example, traveling to different time zones, or switching of devices for various works at school. 
+A significant change in the device fingerprints will usually lead to the falling back to a less convenient but reliable authentification process, such as one-time code sent to the phone or email. Therefore, using fingerprint practices that are reliable over the time for a particular user is prefereable. Having more and diverse metrics collected from different fingerprint practices will allow a small subset of values to varify without decreasing the overall stability of the
+fingerprint.
+
+\paragraph{ Repeatability on Same Device }
+Repeatability is defined as a peroperty whereby the same fingerprint practices generate the same results if the software, hardware, and network configuration of a device does not change. \cite{alca:dev}. It is related to but different from the stability requirement, which it primarily concerns changes in the device configuration.
+For some particular fingerprint practices, such as measuring the JavaScript rendering performance (determined and related to the underlying GPU/CPU performance and load at a specific instance), the same device may generate different results with other applications running: for example, trying to login when having a video compliation job running in the background might produce different fingerprint.
+
+\paragraph { Resistence to Spoofing}
+An attacker can potentially spoof a device fingerprint by mimicing the properties or behaviour of the targeted device. Certain fingerprinting practices will then have a low threshold for this kind of spoofing attack. For example, if the server relies on running a particular JavaScript script at the client side and retrieves the result from the client, then an attack can potentially replay the results to pretend to be the victim.
+On the other hand, some fingerprint practices are more resistent to such spoofing, such as IP address of the sources\cite{beverly:ip}, the timestamps indicating clock skew from MAC protocols packets \cite{ara:wire}.
+
+There are many other requirements that are not listed above in details, such as the overheads in fingerprint collection, the convenience and level of action required from the user, and personalized identification information (the unqiueness of the fingerprints).
+
+
+\subsubsection{Fingerprint Authentification Solution}
+In this section, we discuss two strategies of using fingerprinting to augment authentification: (1) fingerprinting at session initialization, (2) fingerprinting throughout an authenticated session. 
+
+\paragraph{Fingerprint at the start of session}
+Fingerprint information is used as an additional authentification dimension alongside the normal password-based authentification (or other primary authentification method), and an authenticated session requires the matching of both the primary response as well as the fingerprint data stored.
+In order for this strategy to work, the server must be able to store persistently the fingerprint data which is given by the user at registration. 
+Such strategy can go hand-in-hand with the current two-factor authentification. For example, in the event where the device used for receiving SMS is stolen, fingerprint of the stolen device might reveal the unsual state of it as the fingerprint check failed, which leads to additional security checks.
+
+In general, the strategy can prevent or make the below attack more difficult: 
+\begin{itemize}
+    \item \textbf{Naive Attack} A naive attack is defined as a conventional password-guessing attack that does not attempt to provide a matching fingerprint. Device fingerprint can effectively counter this attack since the attacker is assumed to launch the attack in a rather different environment. 
+    \item \textbf{Optimized Password and Fingerprint Guessing}: The attacker might prepare a common profile of fingerprint and uses the popular profile of fingerprint to launch a naive attack by guess the passwords. Device fingerprint can effectively reduce the chance of success under this attack given that the fingeprint information expands the guessing space, and the attacker is only allowed with limited number of trials. 
+    \item \textbf{Fingerprint Spoofing and Phishing}: Just like the normal password spoofing and phishing attack, the attacker can collect fingerprint information from users on top of the password. The level of spoofing resistence used in fingerprint will then largely determine the feasibility of this attack. 
+\end{itemize}
+
+\paragraph{Fingerprint throughout an authenticated session}
+In a typical password-based web authentication scheme, the server will return a cookie upon receiving a valid username and password so that the client will use the cookie as a proof of authentication in every request later on. This could be strenghened by validating the fingerprint information at each request. If the set of fingerprints that the server collect is static, the recomputation of the fingerprint at each request is redundant.
+
+A simple replay attack can be effecively prevented by hashing the fingerprint at the client with a counter before sending to the server, as demonstrated by \cite{preu:smart}. However, for a more powerful attack such as XSS attack, it is less effective. The attacker can launch a XSS targeted at the victim, and steal the plaintext device fingerprint and the counter at the client-side. Once obtaining the fingerprint plaintext, the attacker can reproduce the hash by increment the counter
+and recomputing. In addition, such XSS hijack attack is also possible even if the server dynamically changes the set of fignerprint in each request \cite{unger:shpf} as the attacker can simply collect additional information about the target device once hijack is sucessful.
 
 
 
@@ -177,10 +260,6 @@ What is the design of the system.
 
 \section{Conclusion}
 
-
-\section{ToBeDeleted}
-just to link the bib
-\cite{Lamport:Latex}
 
 % The following two commands are all you need in the
 % initial runs of your .tex file to
