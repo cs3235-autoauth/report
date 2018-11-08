@@ -190,56 +190,54 @@ Combining all these different practices together, the fingerprinter can obtain a
 
 
 
-\subsection{Fingerprint for Authentification}
-Despite the enumerous security loopholes in password-based authentification methodology, it still remains the dominant way for web authentification currently. There are multiple ways to enhance the security of password-based authentification, such as the Multi-Factor Authentification model. 
-Fingerprinting technology can be used as the supporting method of authentification to augment the traditional password-based method.
-A number of commercial fraud detection services have already started trying using device fingerprinting to identify fraudulent transactions.\cite{maxmind} \cite{parame} Fingerprints about user's device is collected implicitly and stored alongside with the contentional password for a user without user's intervention.  The server can use a wide range of fingerprinting methods described in the early sections .The servers can then verify such information later when user is authenticated.
+\subsection{Fingerprinting for Authentication}
+Despite the existing shortcomings of a password-based authentication methodology, it still remains the dominant method for web authentication. There are multiple ways to enhance the security of password-based authentication, such as the Multi-Factor Authentication model. Device fingerprinting can also be used to augment password-based authentication.
+A number of commercial fraud detection services have already started using device fingerprinting in identifying fraudulent transactions.\cite{maxmind} \cite{parame} A user's device fingerprint is collected automatically and stored alongside their\ password.  The server can use a wide range of fingerprinting methods such as those described in earlier. The server can then verify the device fingerprint later during authentication.
 
-The following sections will descuss the possible attacks where device fingerprinting can be used to strengthen web authentification.
+The following sections will discuss the areas to consider when device fingerprinting is used to strengthen web authentication.
 
 
 \subsubsection{Desired Properties}
-In order to effectivley augment user authentification with fingerprinting, there are obviously certain properties of the fingerprinting practices used that must be held to make authentification safer and easier. A set of inappropriate fingerprinting practices chosen may incur too many false negatives in authentification process, denying users access or falling back to the most conservative authentification process frequently. 
-Comparing to the general usage of fingeprinting in advertising, fingerprinting for authentification requires a higher level of accuracy in distinguishing users. A $80\%$ or $90\%$ is simply not enough. \cite{alca:dev}
+In order to effectively augment user authentication with device fingerprinting, there are a number of properties that the device fingerprint should hold. A set of inappropriate fingerprinting practices may incur too many false negatives in the authentication process, denying legitimate users access or falling back to the most conservative authentication process too frequently. 
+Compared to the general usage of fingeprinting in advertising, fingerprinting for authentication requires a higher level of accuracy in distinguishing users. A $80\%$ or $90\%$ accuracy is simply not enough. \cite{alca:dev}
 
-In this section, we will be descussing the properties that make a set of fingerprinting practices a good augmentation for the authentification process:
+In this section, we will be discussing the properties that make a set of fingerprinting practices a good augmentation for the authentication process:
 
-\paragraph{ Stablility at Different Occasions}
-It is normal for a user to have his/her fingerprint changes over time or at different occassions. For example, traveling to different time zones, or switching of devices for various works at school. 
-A significant change in the device fingerprints will usually lead to the falling back to a less convenient but reliable authentification process, such as one-time code sent to the phone or email. Therefore, using fingerprint practices that are reliable over the time for a particular user is prefereable. Having more and diverse metrics collected from different fingerprint practices will allow a small subset of values to varify without decreasing the overall stability of the
-fingerprint.
+\paragraph{Stablility across different scenarios}
+It is normal for a user to have their device fingerprint change over time or in different scenarios. For example,  a user may be traveling across different time zones or switch between devices. 
+A significant change in the device fingerprints will usually lead to a fallback on a less convenient but reliable authentication process, such as a one-time code sent to the user's phone or email. Therefore, using fingerprint practices that are reliable over time for a particular user is prefereable. Having more diverse metrics collected from different fingerprint practices will allow a small subset of values to vary without decreasing the overall stability of the fingerprint.
 
-\paragraph{ Repeatability on Same Device }
-Repeatability is defined as a peroperty whereby the same fingerprint practices generate the same results if the software, hardware, and network configuration of a device does not change. \cite{alca:dev}. It is related to but different from the stability requirement, which it primarily concerns changes in the device configuration.
-For some particular fingerprint practices, such as measuring the JavaScript rendering performance (determined and related to the underlying GPU/CPU performance and load at a specific instance), the same device may generate different results with other applications running: for example, trying to login when having a video compliation job running in the background might produce different fingerprint.
+\paragraph{Repeatability on same device}
+Repeatability is defined as the property whereby the same fingerprinting techniques generate the same results if the software, hardware, and network configuration of a device does not change. \cite{alca:dev}. It is related to but different from the stability requirement, which is primarily concerned  with changes in the device configuration.
+For some  fingerprinting techniques, such as measuring the JavaScript rendering performance (determined and related to the underlying GPU/CPU performance and load at a specific instance), the same device may generate different results with other applications running: for example, trying to login when having a video compliation job running in the background might produce different fingerprints.
 
-\paragraph { Resistence to Spoofing}
-An attacker can potentially spoof a device fingerprint by mimicing the properties or behaviour of the targeted device. Certain fingerprinting practices will then have a low threshold for this kind of spoofing attack. For example, if the server relies on running a particular JavaScript script at the client side and retrieves the result from the client, then an attack can potentially replay the results to pretend to be the victim.
-On the other hand, some fingerprint practices are more resistent to such spoofing, such as IP address of the sources\cite{beverly:ip}, the timestamps indicating clock skew from MAC protocols packets \cite{ara:wire}.
+\paragraph {Resistence to spoofing}
+An attacker can potentially spoof a device fingerprint by mimicking the properties or behaviour of the targeted device. Some fingerprinting techniques  have a low threshold for this kind of spoofing attack. For example, if the server relies on running a particular JavaScript script at the client side and retrieving the result from the client, then an attack can potentially replay the results to pretend to be the victim.
+On the other hand, some fingerprint technique are more resistent to such spoofing, such as the IP address of the sources\cite{beverly:ip} or timestamps indicating clock skew from MAC protocol packets \cite{ara:wire}.
 
-There are many other requirements that are not listed above in details, such as the overheads in fingerprint collection, the convenience and level of action required from the user, and personalized identification information (the unqiueness of the fingerprints).
+There are many other requirements that are not listed above in detail, such as the overhead in fingerprint collection, the convenience and level of action required from the user, and personalized identification information (the uniqueness of the fingerprints).
 
 
-\subsubsection{Fingerprint Authentification Solution}
-In this section, we discuss two strategies of using fingerprinting to augment authentification: (1) fingerprinting at session initialization, (2) fingerprinting throughout an authenticated session. 
+\subsubsection{Fingerprint Authentication Solution}
+In this section, we discuss two strategies of using fingerprinting to augment authentication: (1) fingerprinting at session initialization, (2) fingerprinting throughout an authenticated session. 
 
 \paragraph{Fingerprint at the start of session}
-Fingerprint information is used as an additional authentification dimension alongside the normal password-based authentification (or other primary authentification method), and an authenticated session requires the matching of both the primary response as well as the fingerprint data stored.
+Fingerprint information is used as an additional authentication dimension alongside the normal password-based authentication (or other primary authentication method), and an authenticated session requires the matching of both the primary response as well as the fingerprint data stored.
 In order for this strategy to work, the server must be able to store persistently the fingerprint data which is given by the user at registration. 
-Such strategy can go hand-in-hand with the current two-factor authentification. For example, in the event where the device used for receiving SMS is stolen, fingerprint of the stolen device might reveal the unsual state of it as the fingerprint check failed, which leads to additional security checks.
+Such a strategy can be combined two-factor authentification. For example, in the event where the device used for receiving SMS is stolen, a fingerprint of the stolen device might reveal the unusual state of it as the fingerprint check failed, which leads to additional security checks.
 
-In general, the strategy can prevent or make the below attack more difficult: 
+In general, this strategy can prevent or make the below attacks more difficult: 
 \begin{itemize}
-    \item \textbf{Naive Attack} A naive attack is defined as a conventional password-guessing attack that does not attempt to provide a matching fingerprint. Device fingerprint can effectively counter this attack since the attacker is assumed to launch the attack in a rather different environment. 
-    \item \textbf{Optimized Password and Fingerprint Guessing}: The attacker might prepare a common profile of fingerprint and uses the popular profile of fingerprint to launch a naive attack by guess the passwords. Device fingerprint can effectively reduce the chance of success under this attack given that the fingeprint information expands the guessing space, and the attacker is only allowed with limited number of trials. 
-    \item \textbf{Fingerprint Spoofing and Phishing}: Just like the normal password spoofing and phishing attack, the attacker can collect fingerprint information from users on top of the password. The level of spoofing resistence used in fingerprint will then largely determine the feasibility of this attack. 
+    \item \textbf{Naive Attack} A naive attack is defined as a conventional password-guessing attack that does not attempt to provide a matching fingerprint. A device fingerprint can effectively counter this attack since the attacker is assumed to launch the attack in a rather different environment. 
+    \item \textbf{Optimized Password and Fingerprint Guessing}: The attacker might prepare common fingerprint profiles and use it along with to launch a naive password-guessing attack. A device fingerprint can effectively reduce the chances of success under this attack given that the fingeprint information expands the guessing space, and the attacker is only allowed a limited number of trials. 
+    \item \textbf{Fingerprint Spoofing and Phishing}: Just like a normal password spoofing and phishing attack, the attacker can collect fingerprint information from users on top of the password. The level of spoofing resistence in the fingerprint used will then largely determine the feasibility of this attack. 
 \end{itemize}
 
 \paragraph{Fingerprint throughout an authenticated session}
-In a typical password-based web authentication scheme, the server will return a cookie upon receiving a valid username and password so that the client will use the cookie as a proof of authentication in every request later on. This could be strenghened by validating the fingerprint information at each request. If the set of fingerprints that the server collect is static, the recomputation of the fingerprint at each request is redundant.
+In a typical password-based web authentication scheme, the server will return a cookie upon receiving a valid username and password so that the client will use the cookie as a proof of authentication in every request later on. This could be strenghened by validating the fingerprint information at each request. If the set of fingerprints that the server collects remains static, the recomputation of the fingerprint at each request is redundant.
 
-A simple replay attack can be effecively prevented by hashing the fingerprint at the client with a counter before sending to the server, as demonstrated by \cite{preu:smart}. However, for a more powerful attack such as XSS attack, it is less effective. The attacker can launch a XSS targeted at the victim, and steal the plaintext device fingerprint and the counter at the client-side. Once obtaining the fingerprint plaintext, the attacker can reproduce the hash by increment the counter
-and recomputing. In addition, such XSS hijack attack is also possible even if the server dynamically changes the set of fignerprint in each request \cite{unger:shpf} as the attacker can simply collect additional information about the target device once hijack is sucessful.
+A simple replay attack can be effecively prevented by hashing the fingerprint at the client with a counter before sending to the server, as demonstrated by \cite{preu:smart}. However, for a more powerful attack such as XSS attack, it is less effective. The attacker can launch a XSS targeted at the victim, and steal the plaintext device fingerprint and the counter at the client-side. Once obtaining the fingerprint plaintext, the attacker can reproduce the hash by incrementing the counter
+and recomputing. In addition, such an attack is also possible even if the server dynamically changes the set of fignerprint attributes in each request \cite{unger:shpf} as the attacker can simply collect additional information about the target device once the hijacking is successful.
 
 
 
