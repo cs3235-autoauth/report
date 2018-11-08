@@ -172,15 +172,15 @@ The rest of this section will go through in more detail about each of them.
 
 \paragraph{JavaScript-Based Fingerprinting}
 JavaScript is the default scripting language for almost all interactive web applications now. It provides functionality such as rendering of animation, submitting of user forms, and altering the content of the page dynamically. 
-Other than the informative objects mentioned earlier (\verb|navigator| and \verb|screen|), JavaScript can also be used to identify users indirectly, such as obtaining  browsing history or fine-grained timing information of the JavaScript engine at different browsers.
+Other than the informative objects mentioned earlier (\verb|navigator| and \verb|screen|), JavaScript can also be used to identify users indirectly, such as obtaining browsing history or fine-grained timing information of the JavaScript engine at different browsers.
 
 \paragraph{Plugin-Based Fingerprinting}
-Plugins are equipped with capabilities to access the software and hardware properties of the underlying system. One of these common plugins is Flash that is used for displaying videos and games in the \verb|.swf| format. In order for the web pages to use Flash effectively, Flash exposes APIs to query  information about the operating system, as well as the specific version of Flash installed.
+Plugins are equipped with capabilities to access the software and hardware properties of the underlying system. One of these common plugins is Flash that is used for displaying videos and games in the \verb|.swf| format. In order for the web pages to use Flash effectively, Flash exposes APIs to query information about the operating system, as well as the specific version of Flash installed.
 Moreover, Flash also exposes APIs that allow one to list all the system fonts, which can vary from user to user. The difference in those fonts installed can again be used as an identifier for the user.
 Therefore, the more plugins a user has installed, the more information can be exposed to fingerprinting software.
 
 \paragraph{Extension-Based Fingerprinting}
-A browser extension is a special software component that adds extra functionality to the browser, such as RSS reader or ad-blockers. Extensions are different from plugins as extensions provide additional functionality in the browser itself while plugins enable additional functionality for rendering a web page. Take one of the extensions  that expose additional
+A browser extension is a special software component that adds extra functionality to the browser, such as RSS reader or ad-blockers. Extensions are different from plugins as extensions provide additional functionality in the browser itself while plugins enable additional functionality for rendering a web page. Take one of the extensions that expose additional
 information as an example: \verb|NoScript| \cite{noscript}, which is an extension that blocks executions of Web objects from any URL but those whitelisted. As explained by Mowery et al. \cite{mowery:fg}, one can prepare a list of URLs in the web page and see which of them are listed on the whitelist. The whitelist of the extension then can be used as an identifier to differentiate users from each other.
 
 \paragraph{Header-Based and Server-Side}
@@ -224,7 +224,7 @@ In this section, we discuss two strategies of using fingerprinting to augment au
 \paragraph{Fingerprint at the start of session}
 Fingerprint information is used as an additional authentication dimension alongside the normal password-based authentication (or other primary authentication method), and an authenticated session requires the matching of both the primary response as well as the fingerprint data stored.
 In order for this strategy to work, the server must be able to store persistently the fingerprint data which is given by the user at registration. 
-Such a strategy can be combined two-factor authentification. For example, in the event where the device used for receiving SMS is stolen, a fingerprint of the stolen device might reveal the unusual state of it as the fingerprint check failed, which leads to additional security checks.
+Such a strategy can be combined with two-factor authentication. For example, in the event where the device used for receiving SMS is stolen, a fingerprint of the stolen device might reveal the unusual state of it as the fingerprint check failed, which leads to additional security checks.
 
 In general, this strategy can prevent or make the below attacks more difficult: 
 \begin{itemize}
