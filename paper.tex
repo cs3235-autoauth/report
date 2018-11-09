@@ -258,7 +258,6 @@ The aim of our project is to showcase the possibility that a unique device finge
 \subsection{Device Fingerprint Plugin}
 The mechanism to generate a device fingerprint is the key and integral part of project. We built a plugin, consolidated into one single Javascript file that could analyze and collect a device’s information from a series of 27 components listed below. Each component is weighted according to its uniqueness across different devices. For instance, \textit{pixelRatio} is given a higher percentage than userAgent as it would vary more differently. The values and resulting percentages from each component is then combined into a hashed fingerprint unique for the device.
 
-
 %%% TODO List of attributes
 \begin{itemize}
     \item userAgent: the User-Agent string of the browser eg. \verb|Mozilla/5.0| (\verb|Windows NT 10.0|; \verb|Win64|)
@@ -334,9 +333,12 @@ The NodeJS server utilizes Express 4.0 API routing for communication of data bet
     \label{fig:ui}
 \end{figure}
 
-\section{Extension}
-- What else can be done?
+\section{Extensions}
+\subsection{Improvements to be made}
+One of the issues regarding the current fingerprinting technology that we did not cover in depth is the comparison between accuracy and convenience of the technology. As mentioned previously in Section 3.3, in order to use fingerprinting technology as an authentication method, there needs to be stability across different scenarios. Minor changes made to a user's device such as a screen resolution change have to be handled either by accepting or rejecting the changes in the fingerprint. However, the only way that we can accept this change in our current implementation is by ignoring this specific set of data. This is because device fingerprinting results in a hash and any changes can cause the hash to be totally different.
 
+\paragraph{Accuracy vs Convenience}
+In order to increase the accuracy of fingerprinting technology, we have to include as many different data that can be acquired from the device as possible so as to get more unique values. This results in less convenience for the users as they have to fall back to a two factor authentication in order for the system to recompute their fingerprint. Further research will have to be conducted to find the set of data that is most optimized for both accuracy as well as convenience. Another method to improve the convenience without affecting too much of the accuracy is to use fuzzy hashing to compute the fingerprint hash as fuzzy hashing allows for small changes in the input without affecting the resulting hash. Therefore, it will then be able to handle changes that are small while still detecting large changes such as logging in from a completely different system.
 
 \section{Conclusion}
 In a nutshell, device fingerprinting is an effective and convenient method of device identification and we have examined the possibility of transforming this key idea into web-based user authentication using unique hashed fingerprints.
