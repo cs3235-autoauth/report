@@ -149,8 +149,6 @@ This enhanced persistence, as well as its use by advertsing and analytics compan
 
 Therefore, we would like to explore the usage of device fingerprinting as a security enhancing technique, specifically in constructing a authentication system that is able to authenticate users with their unique device fingerprint, thus eliminating the need for passwords.
 
-\section{Related work}
-- A survey of related work, what has been done, cite some papers and summarize 
 
 \section{Fingerprint Technology}
 
@@ -253,15 +251,87 @@ and recomputing. In addition, such an attack is also possible even if the server
 
 
 \section{Fingerprint Auth Plugin}
-What we built
-\subsection{Design}
-What is the design of the system. 
-- Flow
-- Architecture. (I believe it will be easy)
+This section discusses the design and implementation of our device fingerprinting technique on a web application.
+ 
+The aim of our project is to showcase the possibility that a unique device fingerprint could potentially replace passwords in scenarios where a user needs to be authenticated. In our web application, users are allowed to sign up an account using only an email. During registration, our web application will generate a unique fingerprint hash that pairs with the email provided. Once registered, users can proceed to login using their registered email - they will be authenticated based on the pair of information containing both email and fingerprint hash. This single-field input provides simplicity and ease for users, eliminating the need to remember passwords howbeit without compromising security. 
 
-\subsection{Implementation}
-- What are the modules, key functions, some hacky tricks
+\subsection{Device Fingerprint Plugin}
+The mechanism to generate a device fingerprint is the key and integral part of project. We built a plugin, consolidated into one single Javascript file that could analyze and collect a device’s information from a series of 27 components listed below. Each component is weighted according to its uniqueness across different devices. For instance, \textit{pixelRatio} is given a higher percentage than userAgent as it would vary more differently. The values and resulting percentages from each component is then combined into a hashed fingerprint unique for the device.
 
+%%% TODO List of attributes
+\begin{itemize}
+    \item userAgent: the User-Agent string of the browser eg. \verb|Mozilla/5.0| (\verb|Windows NT 10.0|; \verb|Win64|)
+    \item language: the current language used in the browser, eg. \verb|en-GB|
+    \item colourDepth:  the colour depth of the device in bits eg. $24$.
+      deviceMemory - the amount of memory on the device in gigabytes eg. $4$
+  \item pixelRatio - ratio of device pixels to CSS pixels eg. \verb|2|
+  \item hardwareConcurrency - number of logical processors eg. $8$
+  \item screenResolution - width and height of the current screen eg. $864,1536$
+  \item availableScreenResolution - width and height of the current screen available eg. $824,1536$
+  \item  timezoneOffset - offset from the GMT timezone in minutes eg. $-480$
+  \item timezone - current timezone eg. $Asia/Singapore$
+  \item sessionStorage - whether the HTML5 session storage API is available eg. $true$
+  \item localStorage - whether the HTML5 localStorage API is available eg. $true$
+  \item indexedDb - whether the HTML5 indexedD API is available eg. $true$
+  \item addBehavior - whether addBehaviour is available eg. $false$
+  \item openDatabase - whether WebSQL is available eg. $true$
+  \item cpuClass - CPU class of the device eg. \verb|Win32|
+  \item platform - platform of the device eg. \verb|Win32|
+  \item doNotTrack - whether the Do Not Track setting is on eg. $false$
+  \item plugins - list of plugins installed
+  \item canvas - canvas fingerprint of browser
+  \item webgl - WebGL fingerprint of browser
+  \item webglVendorAndRenderer - WebGL vendor and renderer of browser
+  \item adBlock - whether the browser has an ad blocker installed eg. $false$
+  \item touchSupport - whether the device has a touchscreen interface, with no. of touchpoints eg. $10, false,false$
+  \item fonts - detection of all user installed fonts
+  \item audio - audio fingerprint of device
+\end{itemize}
+
+The idea of a single-file Javascript plugin considers scalability whereby it could be imported into any web application for the purpose of generating a device’s fingerprint.
+
+\subsection{Demo Web Application}
+The plugin above has been fitted into our streamlined web application to exemplify the fingerprint-based authentication.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/demo-flow.png}
+    \caption{Demo Flow of Web Application}
+    \label{fig:demo-flow}
+\end{figure}
+
+As shown in Figure \ref{fig:demo-flow}, our web application consists of three components - User Interface (UI), Server and a Database.
+
+The front-end user interface that displays the registration and login page is built with Angular 6.0, designed with Material Design Bootstrap for aesthetics. The UI is in charged of calling the function of our fingerprint plugin to generate a device fingerprint and thereby package both user input email and hashed fingerprint into a JSON object, passing it to the NodeJS server.
+
+The NodeJS server utilizes Express 4.0 API routing for communication of data between front-end and database. For storing and retrieving of data, it uses Flex.Query Processor Library to execute SQL statements to a MySQL instance.
+
+\begin{itemize}
+    \item \textbf{Sign Up Flow:}
+        \begin{enumerate}
+        \item User signs up with an email  
+        \item UI generates fignerprint hash  
+        \item UI sends fingerprint hash and email of the registering user to backend  
+        \item UI displays the fingerprint hash to user  
+        \item Backend stores fingerprint hash and email into the database  
+        \end{enumerate}
+
+    \item \textbf{Login Flow:}
+        \begin{enumerate}
+        \item User logs in with email  
+        \item UI generates fingerprint hash  
+        \item UI sends fingerprint hash and email to backend  
+        \item Backend checks whether there exists any record for the pair of information and returns either true or false to authenticate the user  
+        \item UI prompts login success / failure  
+\end{enumerate}
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/ui.png}
+    \caption{UI for the Web Applicaiton}
+    \label{fig:ui}
+\end{figure}
 
 \section{Extensions}
 \subsection{Improvements to be made}
@@ -269,8 +339,6 @@ One of the issues regarding the current fingerprinting technology that we did no
 
 \paragraph{Accuracy vs Convenience}
 In order to increase the accuracy of fingerprinting technology, we have to include as many different data that can be acquired from the device as possible so as to get more unique values. This results in less convenience for the users as they have to fall back to a two factor authentication in order for the system to recompute their fingerprint. Further research will have to be conducted to find the set of data that is most optimized for both accuracy as well as convenience. Another method to improve the convenience without affecting too much of the accuracy is to use fuzzy hashing to compute the fingerprint hash as fuzzy hashing allows for small changes in the input without affecting the resulting hash. Therefore, it will then be able to handle changes that are small while still detecting large changes such as logging in from a completely different system.
-
-
 
 \section{Conclusion}
 In a nutshell, device fingerprinting is an effective and convenient method of device identification and we have examined the possibility of transforming this key idea into web-based user authentication using unique hashed fingerprints.
