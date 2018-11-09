@@ -263,8 +263,13 @@ What is the design of the system.
 - What are the modules, key functions, some hacky tricks
 
 
-\section{Extension}
-- What else can be done?
+\section{Extensions}
+\subsection{Improvements to be made}
+One of the issues regarding the current fingerprinting technology that we did not cover in depth is the comparison between accuracy and convenience of the technology. As mentioned previously in Section 3.3, in order to use fingerprinting technology as an authentication method, there needs to be stability across different scenarios. Minor changes made to a user's device such as a screen resolution change have to be handled either by accepting or rejecting the changes in the fingerprint. However, the only way that we can accept this change in our current implementation is by ignoring this specific set of data. This is because device fingerprinting results in a hash and any changes can cause the hash to be totally different.
+
+\paragraph{Accuracy vs Convenience}
+In order to increase the accuracy of fingerprinting technology, we have to include as many different data that can be acquired from the device as possible so as to get more unique values. This results in less convenience for the users as they have to fall back to a two factor authentication in order for the system to recompute their fingerprint. Further research will have to be conducted to find the set of data that is most optimized for both accuracy as well as convenience. Another method to improve the convenience without affecting too much of the accuracy is to use fuzzy hashing to compute the fingerprint hash as fuzzy hashing allows for small changes in the input without affecting the resulting hash. Therefore, it will then be able to handle changes that are small while still detecting large changes such as logging in from a completely different system.
+
 
 
 \section{Conclusion}
