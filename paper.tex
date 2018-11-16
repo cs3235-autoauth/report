@@ -267,7 +267,7 @@ This section discusses the design and implementation of our device fingerprintin
  
 The aim of our project is to showcase the possibility that a unique device fingerprint could potentially replace passwords in an authentication system. We built a web application where users can sign up and login to an account simply using an email. During registration, our web application will generate a unique device fingerprint that pairs with the email provided. Once registered, users can proceed to login using their registered email. During log-in, the application will also generate a log-in device fingerprint and the user will be authenticated based on the existence of email and the similarity between the log-in fingerprint and the registered fingerprint if the email provided exists. This single-field input authentication provides simplicity and ease for users, eliminating the need to remember passwords without compromising security.
 
-The authentication algorithm introduces a degree of complexity whereby the similarity of two device fingerprints is evaluated based on a threshold level. This threshold level is customizable during registration (Figure \ref{fig:level}) and explained in the table below.
+The authentication algorithm introduces a degree of complexity whereby the similarity of two device fingerprints is evaluated based on a threshold level. This threshold level is customizable during registration and the different levels are explained in Figure \ref{fig:level}.
 
 \begin{figure}[h]
     \centering
