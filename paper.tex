@@ -338,7 +338,7 @@ As shown in Figure \ref{fig:demo-flow}, our web application consists of three co
 
 The front-end user interface that displays the registration and login pages was built with Angular 6.0, designed with Material Design Bootstrap for a consistent and fluent design. Background animation was added to create an aesthetic appeal that blends into the “security” theme. The UI is responsible for input validations, sending and receiving data to-and-from the backend (NodeJS) server. It triggers the Javascript function of our fingerprint plugin to generate a device fingerprint and thereby package both user input email and device fingerprint into a JSON object, passing it to the NodeJS server.
 
-The NodeJS server utilizes Express 4.0 for communication of data between front-end and database. The specific set of APIs are exposed to the UI such that only the responses and requests made by the UI would be routed for operations. For storing and retrieving of data from the database, it uses Flex.Query Processor Library to execute SQL statements to a MySQL instance. The server also stores and execute the algorithm logic for registration and login authentication. 
+The NodeJS server utilizes Express 4.0 for communication of data between front-end and database. The specific set of APIs are exposed to the UI such that only the responses and requests made by the UI would be routed for operations. For storing and retrieving of data from the database, it uses Flex.Query Processor Library to execute SQL statements to a MySQL instance. The server also stores and executes the algorithm logic for registration and login authentication. 
 
 
 \begin{itemize}
