@@ -403,9 +403,9 @@ Adding multi-device support to our current implementation is as easy as register
 Before we start using fingerprint authentication in a real world application, it is very important to ensure that a 2FA (Two Factor Authentication) is in place. This is because in the event where a user's device fingerprint changes significantly more than the allowed threshold, we are still able to use 2FA to authenticate the user, and at the same time reregister the user's device fingerprint into the database.
 
 \section{Conclusion}
-In a nutshell, device fingerprinting is an effective and convenient method of device identification and we have examined the possibility of transforming this key idea into web-based user authentication using unique hashed fingerprints.
+In a nutshell, device fingerprinting is an effective and convenient method of device identification and we have examined the possibility of transforming this key idea into web-based user authentication using unique fingerprints.
 
-By combining various components of a device's properties, we could increase the fingerprint entropy as well as obtain a hash unqiue for an individual's device, correspondingly unique to an individual.
+By combining various components of a device's properties, we could increase the fingerprint entropy for an individual's device, correspondingly unique to an individual.
 
 Although an device's fingerprint could change over time, we have considered that a user can be re-authenticated using a one-time password sent to their registered email.
 
