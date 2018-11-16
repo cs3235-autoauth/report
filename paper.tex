@@ -30,7 +30,7 @@
 
 \begin{document}
 
-\title{Device fingerprinting for user authentication in web applications
+\title{Device Fingerprinting for User Authentication in Web Applications
 \titlenote{(Does NOT produce the permission block, copyright information nor page numbering). For use with ACM\_PROC\_ARTICLE-SP.CLS. Supported by ACM.}}
 %%%  \subtitle{[Extended Abstract]
 %%% \titlenote{A full version of this paper is available as
@@ -265,85 +265,120 @@ If the above requirements can be met, device fingerprinting alone could be used 
 \section{Fingerprint Auth Plugin}
 This section discusses the design and implementation of our device fingerprinting technique on a web application.
  
-The aim of our project is to showcase the possibility that a unique device fingerprint could potentially replace passwords in scenarios where a user needs to be authenticated. In our web application, users are allowed to sign up an account using only an email. During registration, our web application will generate a unique fingerprint hash that pairs with the email provided. Once registered, users can proceed to login using their registered email - they will be authenticated based on the pair of information containing both email and fingerprint hash. This single-field input provides simplicity and ease for users, eliminating the need to remember passwords howbeit without compromising security. 
+The aim of our project is to showcase the possibility that a unique device fingerprint could potentially replace passwords in an authentication system. We built a web application where users can sign up and login to an account simply using an email. During registration, our web application will generate a unique device fingerprint that pairs with the email provided. Once registered, users can proceed to login using their registered email. During log-in, the application will also generate a log-in device fingerprint and the user will be authenticated based on the existence of email and the similarity between the log-in fingerprint and the registered fingerprint if the email provided exists. This single-field input authentication provides simplicity and ease for users, eliminating the need to remember passwords without compromising security.
 
-\subsection{Device Fingerprint Plugin}
-The mechanism to generate a device fingerprint is the key and integral part of project. We built a plugin, consolidated into one single Javascript file that could analyze and collect a device’s information from a series of 27 components listed below. Each component is weighted according to its uniqueness across different devices. For instance, \textit{pixelRatio} is given a higher percentage than userAgent as it would vary more differently. The values and resulting percentages from each component is then combined into a hashed fingerprint unique for the device.
+The authentication algorithm introduces a degree of complexity whereby the similarity of two device fingerprints is evaluated based on a threshold level. This threshold level is customizable during registration and the different levels are explained in Figure \ref{fig:level}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/level.png}
+    \caption{Security Levels For Demonstration}
+    \label{fig:level}
+\end{figure}
+
+The algorithm sets up for authentication by assigning a weightage to each component that make up the original fingerprint. This accounts for variations in a device fingerprint.
+
+In the current implementation, an email account is tied to one device fingerprint. In other words, the user can only use the device he/she registered the account with. This would be ideal in scenarios where a firm wishes to lock-down usage of an account strictly to a machine for tightened security purposes. However, this would not be ideal on platforms where user should be able to be authenticated across different devices. Hence, we have considered various measures such as using two-factor authentication by sending a one-time key to the registered email when logged in on an unidentified device (also elaborated in Extensions section) for future releases.
+
+
+
+\subsection{Device Fingerprint Generation}
+The mechanism to generate a device fingerprint is the key and integral part of our project. We built a plugin, consolidated into one single Javascript file that could analyze and collect a device’s information from a series of 27 components listed below. 
+Some components are easy to get as they are avialble in JavaScript, while some are more invovled. For example, fingerprint for WebGL and Canvas required test rendering of objects dynamically to obtain the specific information. 
+Each component is weighted according to its uniqueness across different devices. For instance, pixelRatio is given a higher percentage than userAgent as it would vary more differently. The generated array of values and its weighted percentages are sent as a JSON object to be stored in the database. 
+
 
 %%% TODO List of attributes
 \begin{itemize}
-    \item userAgent: the User-Agent string of the browser eg. \verb|Mozilla/5.0| (\verb|Windows NT 10.0|; \verb|Win64|)
-    \item language: the current language used in the browser, eg. \verb|en-GB|
-    \item colourDepth:  the colour depth of the device in bits eg. $24$.
-      deviceMemory - the amount of memory on the device in gigabytes eg. $4$
-  \item pixelRatio - ratio of device pixels to CSS pixels eg. \verb|2|
-  \item hardwareConcurrency - number of logical processors eg. $8$
-  \item screenResolution - width and height of the current screen eg. $864,1536$
-  \item availableScreenResolution - width and height of the current screen available eg. $824,1536$
-  \item  timezoneOffset - offset from the GMT timezone in minutes eg. $-480$
-  \item timezone - current timezone eg. $Asia/Singapore$
-  \item sessionStorage - whether the HTML5 session storage API is available eg. $true$
-  \item localStorage - whether the HTML5 localStorage API is available eg. $true$
-  \item indexedDb - whether the HTML5 indexedD API is available eg. $true$
-  \item addBehavior - whether addBehaviour is available eg. $false$
-  \item openDatabase - whether WebSQL is available eg. $true$
-  \item cpuClass - CPU class of the device eg. \verb|Win32|
-  \item platform - platform of the device eg. \verb|Win32|
-  \item doNotTrack - whether the Do Not Track setting is on eg. $false$
-  \item plugins - list of plugins installed
-  \item canvas - canvas fingerprint of browser
-  \item webgl - WebGL fingerprint of browser
-  \item webglVendorAndRenderer - WebGL vendor and renderer of browser
-  \item adBlock - whether the browser has an ad blocker installed eg. $false$
-  \item touchSupport - whether the device has a touchscreen interface, with no. of touchpoints eg. $10, false,false$
-  \item fonts - detection of all user installed fonts
-  \item audio - audio fingerprint of device
+    \item \textbf{userAgent}: the User-Agent string of the browser eg. \verb|Mozilla/5.0| (\verb|Windows NT 10.0|; \verb|Win64|)
+    \item \textbf{language}: the current language used in the browser, eg. \verb|en-GB|
+    \item \textbf{colourDepth}:  the colour depth of the device in bits eg. $24$.
+    \item\textbf{ deviceMemory} - the amount of memory on the device in gigabytes eg. $4$
+    \item\textbf{ pixelRatio} - ratio of device pixels to CSS pixels eg. \verb|2|
+    \item\textbf{ hardwareConcurrency} - number of logical processors eg. $8$
+    \item\textbf{ screenResolution} - width and height of the current screen eg. $864,1536$
+    \item\textbf{ availableScreenResolution} - width and height of the current screen available eg. $824,1536$
+    \item\textbf{  timezoneOffset} - offset from the GMT timezone in minutes eg. $-480$
+    \item\textbf{ timezone} - current timezone eg. $Asia/Singapore$
+    \item\textbf{ sessionStorage} - whether the HTML5 session storage API is available eg. $true$
+    \item\textbf{ localStorage} - whether the HTML5 localStorage API is available eg. $true$
+    \item\textbf{ indexedDb} - whether the HTML5 indexedD API is available eg. $true$
+    \item\textbf{ addBehavior} - whether addBehaviour is available eg. $false$
+    \item\textbf{ openDatabase} - whether WebSQL is available eg. $true$
+    \item\textbf{ cpuClass} - CPU class of the device eg. \verb|Win32|
+    \item\textbf{ platform} - platform of the device eg. \verb|Win32|
+    \item\textbf{ doNotTrack} - whether the Do Not Track setting is on eg. $false$
+    \item\textbf{ plugins} - list of plugins installed
+    \item\textbf{ canvas} - canvas fingerprint of browser
+    \item\textbf{ webgl} - WebGL fingerprint of browser
+    \item\textbf{ webglVendorAndRenderer} - WebGL vendor and renderer of browser
+    \item\textbf{ adBlock} - whether the browser has an ad blocker installed eg. $false$
+    \item\textbf{ touchSupport} - whether the device has a touchscreen interface, with no. of touchpoints eg. $10, false,false$
+    \item\textbf{ fonts} - detection of all user installed fonts
+    \item\textbf{ audio} - audio fingerprint of device
+    \item\textbf{ enumerateDevice} -  list of all media input and output devices, such as microphones or webcams
+
 \end{itemize}
+
+
 
 The idea of a single-file Javascript plugin considers scalability whereby it could be imported into any web application for the purpose of generating a device’s fingerprint.
 
 \subsection{Demo Web Application}
-The plugin above has been fitted into our streamlined web application to exemplify the fingerprint-based authentication.
+The Javascript plugin above for generating device fingerprint was fitted into our streamlined web application to exemplify the fingerprint-based authentication.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{assets/demo-flow.png}
+    \includegraphics[width=0.5\textwidth]{assets/fig3-demo-flow.png}
     \caption{Demo Flow of Web Application}
     \label{fig:demo-flow}
 \end{figure}
 
 As shown in Figure \ref{fig:demo-flow}, our web application consists of three components - User Interface (UI), Server and a Database.
 
-The front-end user interface that displays the registration and login page is built with Angular 6.0, designed with Material Design Bootstrap for aesthetics. The UI is in charged of calling the function of our fingerprint plugin to generate a device fingerprint and thereby package both user input email and hashed fingerprint into a JSON object, passing it to the NodeJS server.
+The front-end user interface that displays the registration and login pages was built with Angular 6.0, designed with Material Design Bootstrap for a consistent and fluent design. Background animation was added to create an aesthetic appeal that blends into the “security” theme. The UI is responsible for input validations, sending and receiving data to-and-from the backend (NodeJS) server. It triggers the Javascript function of our fingerprint plugin to generate a device fingerprint and thereby package both user input email and device fingerprint into a JSON object, passing it to the NodeJS server.
 
-The NodeJS server utilizes Express 4.0 API routing for communication of data between front-end and database. For storing and retrieving of data, it uses Flex.Query Processor Library to execute SQL statements to a MySQL instance.
+The NodeJS server utilizes Express 4.0 for communication of data between front-end and database. The specific set of APIs are exposed to the UI such that only the responses and requests made by the UI would be routed for operations. For storing and retrieving of data from the database, it uses Flex.Query Processor Library to execute SQL statements to a MySQL instance. The server also stores and executes the algorithm logic for registration and login authentication. 
+
 
 \begin{itemize}
     \item \textbf{Sign Up Flow:}
         \begin{enumerate}
-        \item User signs up with an email  
-        \item UI generates fignerprint hash  
-        \item UI sends fingerprint hash and email of the registering user to backend  
-        \item UI displays the fingerprint hash to user  
-        \item Backend stores fingerprint hash and email into the database  
+            \item User signs up with an email and select a security level (Figure \ref{fig:regis})
+            \item UI generates device fingerprint JSON object containing 27 device components
+            \item UI sends device fingerprint and email of the registering user to backend server  
+            \item UI displays the table of 27-component device fingerprint to user (Figure \ref{fig:fingerprint-comp})
+            \item Backend stores device fingerprint and email into MySQL database
         \end{enumerate}
 
     \item \textbf{Login Flow:}
         \begin{enumerate}
-        \item User logs in with email  
-        \item UI generates fingerprint hash  
-        \item UI sends fingerprint hash and email to backend  
-        \item Backend checks whether there exists any record for the pair of information and returns either true or false to authenticate the user  
-        \item UI prompts login success / failure  
-\end{enumerate}
+            \item User logs in with email  
+            \item UI generates device fingerprint JSON object containing 27 device components
+            \item UI sends device fingerprint and email to backend server
+            \item Backend checks whether there exists any record for email and runs an algorithm to match each of the 27 device fingerprint components based on the security level chosen by the user
+            \item  UI redirects to a login success page if email and device fingerprint were successfully matched. Otherwise, UI redirects to a login failure page if either email or device fingerprint failed to match
+        \end{enumerate}
 \end{itemize}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{assets/ui.png}
-    \caption{UI for the Web Applicaiton}
-    \label{fig:ui}
+    \includegraphics[width=0.5\textwidth]{assets/fig1-ui-threshold-level.png}
+    \caption{Registration Page}
+    \label{fig:regis}
 \end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/fig2-ui-fingerprint-components.png}
+    \caption{Demo Page to Show User Fingerprint Value}
+    \label{fig:fingerprint-comp}
+\end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{assets/ui.png}
+%     \caption{UI for the Web Applicaiton}
+%     \label{fig:ui}
+% \end{figure}
 
 \section{Extensions}
 
@@ -368,9 +403,9 @@ Adding multi-device support to our current implementation is as easy as register
 Before we start using fingerprint authentication in a real world application, it is very important to ensure that a 2FA (Two Factor Authentication) is in place. This is because in the event where a user's device fingerprint changes significantly more than the allowed threshold, we are still able to use 2FA to authenticate the user, and at the same time reregister the user's device fingerprint into the database.
 
 \section{Conclusion}
-In a nutshell, device fingerprinting is an effective and convenient method of device identification and we have examined the possibility of transforming this key idea into web-based user authentication using unique hashed fingerprints.
+In a nutshell, device fingerprinting is an effective and convenient method of device identification and we have examined the possibility of transforming this key idea into web-based user authentication using unique fingerprints.
 
-By combining various components of a device's properties, we could increase the fingerprint entropy as well as obtain a hash unqiue for an individual's device, correspondingly unique to an individual.
+By combining various components of a device's properties, we could increase the fingerprint entropy for an individual's device, correspondingly unique to an individual.
 
 Although an device's fingerprint could change over time, we have considered that a user can be re-authenticated using a one-time password sent to their registered email.
 
